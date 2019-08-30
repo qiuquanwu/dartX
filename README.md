@@ -37,7 +37,7 @@
 ### 使用方法
 1.下载安装
 ```shell
-git clone <项目地址>
+git clone https://github.com/qiuquanwu/dartX.git
 ```
 2.启动服务
 ```shell
