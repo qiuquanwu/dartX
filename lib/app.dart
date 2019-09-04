@@ -1,38 +1,50 @@
 import 'dart:io';
-import 'dart:convert';
 import 'route.dart';
+import 'router.dart';
 class App{
-  List<Route> routes=[];
-  Function fn;
-  App(routes){
-    this.routes=routes;
+  Router router;
+  App(router){
+    this.router=router;
   }
   handleGet( HttpRequest request){
     var uri=request.uri.toString();
+    var routes=router.GetRoutes();
+    print("routes:"+routes.length.toString());
     for (Route route in routes){
       var curi=route.uri;
       var method=route.method;
-        if( curi == uri && method=='GET'){    
-            fn=route.callBackfunc;
-            fn(request,request.response);
+        if( curi == uri && method=='GET'){ 
+          //只要单独中间件存在
+            handle(route,request);
             break;
-        }else{
-            print('request method not found!');
         }
+    }    
+  }
+  handle(route,request){
+            //只要单独中间件存在
+    if(route.middleware!=null){
+      print("使用单独中间件");
+      route.middleware.handle(request,route.callBackfunc);
+    }else if(router.middleware!=null){
+      //全局中间件存在，单独中间件不存在
+      print("使用全局中间件");
+      router.middleware.handle(request,route.callBackfunc);
+    }else{
+      print("未使用中间件");
+      route.callBackfunc(request,request.response);
     }
-      
+
   }
   handlePost(HttpRequest request){
    var uri=request.uri.toString();
+   var routes=router.GetRoutes();
+    print("routes:"+routes.length.toString());
     for (Route route in routes){
       var curi=route.uri;
       var method=route.method;
         if( curi == uri && method=='POST'){    
-            fn=route.callBackfunc;
-            fn(request,request.response);
+            handle(route,request);
             break;
-        }else{
-             print('request method not found!');
         }
     }
     

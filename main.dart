@@ -1,8 +1,8 @@
 import 'lib/app.dart';
-import 'lib/router.dart';
 import 'route/routeList.dart';
 main(){
-  var routes=routeInit();
-  var app=new App(routes);
+  var router=routeInit();
+  print(router.GetRoutes().length);
+  var app=new App(router);
   app.listen(4040);
 }

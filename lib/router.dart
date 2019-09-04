@@ -1,21 +1,38 @@
+import 'middleware.dart';
 import 'route.dart';
 /**路由器 */
 class Router{
   List<Route> routes=[];
-  Router(){
+  Middleware middleware=null;
+  Router({Middleware middleware}){
+    this.middleware=middleware;
   }
   /**post方法 */
-  post(uri,fn){
-    var route=new Route('POST',uri,fn);
-    addf(route);
+  POST(String uri,Function fn,{Middleware middleware}){
+    if(middleware!=null){
+      _addRoute(new Route('POST',uri,fn,middleware: middleware));
+    }else{
+      _addRoute(new Route('POST',uri,fn));
+    }
   }
   /**get方法 */
-  getf(uri,fn){
-    var route=new Route('GET',uri,fn);
-    addf(route);
+  GET(String uri,Function fn,{Middleware middleware}){
+    if(middleware!=null){
+      _addRoute(new Route('GET',uri,fn,middleware: middleware));
+    }else{
+      _addRoute(new Route('GET',uri,fn));
+    }
   }
   /**添加路由节点 */
-  addf(route){
+  _addRoute(route){
     routes.add(route);
+  }
+  /**使用全局中间件 */
+  use(middleware){
+    print("添加中间件");
+    this.middleware=middleware;
+  }
+  GetRoutes(){
+    return routes;
   }
 }
