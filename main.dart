@@ -1,8 +1,11 @@
 import 'lib/app.dart';
 import 'route/routeList.dart';
 main(){
-  var router=routeInit();
+  ///初始化路由
+  Router router=routeInit();
+  //打印注册路由的个数
   print(router.GetRoutes().length);
-  var app=new App(router);
+  //创建 App
+  App app=new App(router);
   app.listen(4040);
 }

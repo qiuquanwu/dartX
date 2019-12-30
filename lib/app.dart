@@ -7,12 +7,12 @@ class App{
     this.router=router;
   }
   handleGet( HttpRequest request){
-    var uri=request.uri.toString();
-    var routes=router.GetRoutes();
+    String uri=request.uri.toString();
+    List<Route> routes=router.GetRoutes();
     print("routes:"+routes.length.toString());
     for (Route route in routes){
-      var curi=route.uri;
-      var method=route.method;
+      String curi=route.uri;
+      String method=route.method;
         if( curi == uri && method=='GET'){ 
           //只要单独中间件存在
             handle(route,request);
@@ -36,12 +36,12 @@ class App{
 
   }
   handlePost(HttpRequest request){
-   var uri=request.uri.toString();
-   var routes=router.GetRoutes();
+   String uri=request.uri.toString();
+   List<Route> routes=router.GetRoutes();
     print("routes:"+routes.length.toString());
     for (Route route in routes){
-      var curi=route.uri;
-      var method=route.method;
+      String curi=route.uri;
+      String method=route.method;
         if( curi == uri && method=='POST'){    
             handle(route,request);
             break;
@@ -63,6 +63,7 @@ class App{
   }
   void listen (int port) async{
       var requestServer = await HttpServer.bind(InternetAddress.LOOPBACK_IP_V4, port);
+
       print('服务已经启动，请打开浏览器输入http://127.0.0.1:4040');
       await for (HttpRequest request in requestServer) {
         handleRequest(request);
