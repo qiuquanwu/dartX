@@ -29,10 +29,10 @@ class Router{
   }
   /**使用全局中间件 */
   use(middleware){
-    print("添加中间件");
+    //print("添加中间件");
     this.middleware=middleware;
   }
-  GetRoutes(){
+  List<Route> GetRoutes(){
     return routes;
   }
 }

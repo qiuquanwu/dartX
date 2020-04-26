@@ -1,18 +1,18 @@
 
-import '../lib/middleware.dart';
-import '../lib/router.dart';
-routeInit(){
-  //声明中间件
-  var middleware1=new Middleware((request,next)=>{
-      print("全局中间件"),
+import '../core/middleware.dart';
+import '../core/router.dart';
+Router routeInit(){
+  //声明中间件router
+  Middleware middleware1=new Middleware((request,next)=>{
+      //print("全局中间件"),
       next(request,request.response)
   });
 
-    var middleware2=new Middleware((request,next)=>{
-      print("单独中间件"),
+    Middleware middleware2=new Middleware((request,next)=>{
+      //print("单独中间件"),
       next(request,request.response)
   });
-  var router=new Router();
+  Router router=new Router();
   /**处理get请求 */
   router.GET('/',(req,res)=>{
     res..write('index')
