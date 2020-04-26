@@ -3,12 +3,13 @@
 - 入口文件 main.dart
 - 2019-09-05 添加路由中间件支持，支持全局中间件和单独路由中间件
 ```dart
-import 'lib/app.dart';
-import 'route/routeList.dart';
+import 'core/app.dart';
+import 'core/router.dart';
+import 'routes/routeList.dart';
 main(){
-  var router=routeInit();
-  print(router.GetRoutes().length);
-  var app=new App(router);
+  ///初始化路由
+  Router router=routeInit();
+  App app=new App(router);
   app.listen(4040);
 }
 
@@ -17,20 +18,20 @@ main(){
 - 路由入口 route/routeList.dart
 ```dart
 
-import '../lib/middleware.dart';
-import '../lib/router.dart';
-routeInit(){
-  //声明中间件
-  var middleware1=new Middleware((request,next)=>{
-      print("全局中间件"),
+import '../core/middleware.dart';
+import '../core/router.dart';
+Router routeInit(){
+  //声明中间件router
+  Middleware middleware1=new Middleware((request,next)=>{
+      //print("全局中间件"),
       next(request,request.response)
   });
 
-    var middleware2=new Middleware((request,next)=>{
-      print("单独中间件"),
+    Middleware middleware2=new Middleware((request,next)=>{
+      //print("单独中间件"),
       next(request,request.response)
   });
-  var router=new Router();
+  Router router=new Router();
   /**处理get请求 */
   router.GET('/',(req,res)=>{
     res..write('index')
