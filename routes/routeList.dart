@@ -7,7 +7,7 @@ Router routeInit() {
   //声明中间件router
   Middleware middleware = new Middleware((request, next) => {
         //print("全局中间件"),
-        print(123),
+        //print(123),
         next(new Context(request))
       });
   Router router = new Router();

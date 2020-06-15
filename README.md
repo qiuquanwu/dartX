@@ -6,52 +6,58 @@
 import 'core/app.dart';
 import 'core/router.dart';
 import 'routes/routeList.dart';
-main(){
+
+void main() {
   ///初始化路由
-  Router router=routeInit();
-  App app=new App(router);
+  Router router = routeInit();
+  App app = new App(router);
   app.listen(4040);
 }
-
 
 ```
 - 路由入口 route/routeList.dart
 ```dart
-
 import '../core/middleware.dart';
 import '../core/router.dart';
-Router routeInit(){
-  //声明中间件router
-  Middleware middleware1=new Middleware((request,next)=>{
-      //print("全局中间件"),
-      next(request,request.response)
-  });
+import '../core/Context.dart';
+import '../http/controller/HomeController.dart';
 
-    Middleware middleware2=new Middleware((request,next)=>{
-      //print("单独中间件"),
-      next(request,request.response)
-  });
-  Router router=new Router();
+Router routeInit() {
+  //声明中间件router
+  Middleware middleware = new Middleware((request, next) => {
+        //print("全局中间件"),
+        //print(123),
+        next(new Context(request))
+      });
+  Router router = new Router();
   /**处理get请求 */
-  router.GET('/',(req,res)=>{
-    res..write('index')
-       ..close()
-  });
+  router.GET('/', HomeController.index);
   //使用单独中间件的路由
-  router.GET('/home',(req,res)=>{
-    res..write('home')
-       ..close()
-  },middleware: middleware2);
-  /**处理post请求 */
-  router.POST('/add',(req,res)=>{
-    res..write('home')
-       ..close()
-  });
-  //绑定全局中间件
-  router.use(middleware1);
-  
+
+  router.use(middleware);
+
   return router;
 }
+
+```
+- 控制器 /http/HomeController.dart
+```dart
+import '../../core/Context.dart';
+import '../../http/model/User.dart';
+
+class HomeController {
+  static void userList(Context c) {
+    String result = "123";
+    c.JSON(result);
+  }
+
+  static void index(Context c) {
+    User user = new User("小张", 23);
+
+    c.JSON(user);
+  }
+}
+
 ```
 ### 使用方法
 1.下载安装
